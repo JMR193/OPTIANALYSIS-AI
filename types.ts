@@ -12,3 +12,13 @@ export interface EyeAnalysis {
   followUpQuestions: string[];
   recommendation: string;
 }
+
+export interface ReportAnalysis {
+  disclaimer: string;
+  summary: string;
+  reportType: string;
+  keyFindings: string[];
+  differentialDiagnosis: string[];
+  recommendationsForClinician: string[];
+  criticalAlerts: string[];
+}
