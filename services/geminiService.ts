@@ -1,4 +1,3 @@
-
 import { GoogleGenAI, Type } from "@google/genai";
 import type { EyeAnalysis } from '../types';
 
@@ -15,7 +14,7 @@ const analysisSchema = {
     properties: {
         disclaimer: {
             type: Type.STRING,
-            description: "A mandatory disclaimer stating this is not a medical diagnosis."
+            description: "A mandatory disclaimer stating this is not a medical diagnosis and is for informational purposes only."
         },
         potentialCondition: {
             type: Type.STRING,
@@ -27,17 +26,61 @@ const analysisSchema = {
         },
         commonSymptoms: {
             type: Type.ARRAY,
-            items: {
-                type: Type.STRING
-            },
+            items: { type: Type.STRING },
             description: "A list of common symptoms associated with the condition."
+        },
+        earlyDetectionSigns: {
+            type: Type.ARRAY,
+            items: { type: Type.STRING },
+            description: "A list of early warning signs or subtle symptoms for the condition."
+        },
+        riskFactors: {
+            type: Type.ARRAY,
+            items: { type: Type.STRING },
+            description: "Common risk factors associated with the condition (e.g., age, genetics, lifestyle)."
+        },
+        recommendedTests: {
+            type: Type.ARRAY,
+            items: { type: Type.STRING },
+            description: "A list of specific diagnostic tests an ophthalmologist might recommend."
+        },
+        treatmentOptions: {
+            type: Type.STRING,
+            description: "A brief overview of common treatment pathways or management strategies."
+        },
+        multidisciplinaryApproach: {
+            type: Type.STRING,
+            description: "Mention if managing this condition often requires collaboration with other medical specialists (e.g., endocrinologist for diabetic retinopathy) and why. If not applicable, state 'Typically managed by an ophthalmologist alone'."
+        },
+        preventionTips: {
+            type: Type.ARRAY,
+            items: { type: Type.STRING },
+            description: "Actionable tips for eye health and prevention related to the condition."
+        },
+        followUpQuestions: {
+            type: Type.ARRAY,
+            items: { type: Type.STRING },
+            description: "A list of pertinent questions the user can ask their doctor to better understand their situation."
         },
         recommendation: {
             type: Type.STRING,
-            description: "A clear recommendation, usually advising to consult a professional ophthalmologist."
+            description: "A clear, concluding recommendation, usually advising to consult a professional ophthalmologist for a definitive diagnosis and treatment plan."
         },
     },
-    required: ["disclaimer", "potentialCondition", "description", "commonSymptoms", "recommendation"]
+    required: [
+        "disclaimer", 
+        "potentialCondition", 
+        "description", 
+        "commonSymptoms", 
+        "earlyDetectionSigns",
+        "riskFactors",
+        "recommendedTests",
+        "treatmentOptions",
+        "multidisciplinaryApproach",
+        "preventionTips",
+        "followUpQuestions",
+        "recommendation"
+    ]
 };
 
 export const analyzeEyeImage = async (base64Image: string, mimeType: string): Promise<EyeAnalysis> => {
@@ -53,7 +96,7 @@ export const analyzeEyeImage = async (base64Image: string, mimeType: string): Pr
                   },
               },
               {
-                  text: "You are an AI medical assistant specializing in ophthalmology. Analyze this image of an eye. Identify potential health concerns and provide information in the specified JSON format. Do not diagnose, but suggest possibilities. If the image is not of an eye or is unclear, state that in the `potentialCondition` field and recommend uploading a clearer image."
+                  text: "You are an AI medical assistant specializing in ophthalmology. Analyze this image of an eye. Provide a comprehensive report in the specified JSON format. The report should cover: a potential condition, its description, common symptoms, early detection signs, risk factors, recommended diagnostic tests, common treatment options, any multidisciplinary approach needed, prevention tips, questions to ask a doctor, and a final recommendation. Do not diagnose, but suggest possibilities. If the image is not of an eye or is unclear, state that in the `potentialCondition` field and recommend uploading a clearer image, filling other fields with relevant 'not applicable' messages."
               },
           ],
       },
