@@ -1,0 +1,5 @@
+{
+  "name": "AI Eye Health Assistant",
+  "description": "An AI-powered application to analyze eye images for potential health concerns. This tool provides preliminary information and is not a substitute for professional medical advice.",
+  "requestFramePermissions": []
+}
